@@ -83,16 +83,11 @@ static void conversation_created_cb(PurpleConversation *conv) {
 	rearrange_tabs(conv);
 }
 
-static void recv_cb(PurpleAccount *account, char *sender, char *message, PurpleConversation *conv, PurpleMessageFlags flags) {
-	rearrange_tabs(conv);
-}
-
 static gboolean plugin_load(PurplePlugin *plugin) {
 	void *convs_handle;
 	convs_handle = purple_conversations_get_handle();
 
 	purple_signal_connect(convs_handle, "conversation-created", plugin, PURPLE_CALLBACK(conversation_created_cb), NULL);
-	purple_signal_connect(convs_handle, "received-chat-msg", plugin, PURPLE_CALLBACK(recv_cb), NULL);
 
 	return TRUE;
 }
