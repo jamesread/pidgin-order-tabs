@@ -9,8 +9,6 @@
 #include "gtkconv.h"
 #include "string.h"
 
-#define DEBUG 0
-
 #define PLUGIN_VERSION "1.0"
 
 static int compare(const void * a, const void * b) {
@@ -19,9 +17,7 @@ static int compare(const void * a, const void * b) {
 
 	int diff = strcmp(pa, pb);
 
-#if DEBUG
-	printf("compare: %s vs %s = %d \n", pa, pb, diff);
-#endif
+	//printf("compare: %s vs %s = %d \n", pa, pb, diff);
 
 	return diff;
 }
@@ -78,9 +74,7 @@ static void rearrange_tabs(PurpleConversation *purpleConv) {
 	qsort(tablist, sizeof(tablist)/sizeof(char *), sizeof(char *), compare);
 
 	for (int i = 0; i < count_tabs; i++) {
-#if DEBUG
-		printf("%s\n", tablist[i]);
-#endif
+		//printf("Sorted: %s\n", tablist[i]);
 		gtk_notebook_reorder_child(GTK_NOTEBOOK(win->notebook), get_tab_by_title(tablist[i], win), i);
 	}
 }
