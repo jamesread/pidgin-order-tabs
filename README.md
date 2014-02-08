@@ -1,9 +1,11 @@
-# Pidgin arrange tabs plugin
+# pidgin-order-tabs plugin
 
 This is a massive copy of "leftify tabs" which can be found here: 
 https://github.com/nablaa/pidgin-leftify-tabs-plugin 
 
-Arranges tabs alphabetically. This plugin has no options.
+Order conversation tabs alphabetically. Tabs are ordered on startup, 
+use the '/ordertabs' in any chat to order your tabs anytime. This plugin has no
+options.
 
 ## Compiling and installing the plugin
 

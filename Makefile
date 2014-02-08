@@ -18,18 +18,18 @@ PIDGIN_LIBS += `pkg-config --libs pidgin`
 
 PLUGIN_DIR = ~/.purple/plugins/
 
-arrange_tabs.so: arrange_tabs.o
+order-tabs.so: order-tabs.o
 	$(CC) $(LDFLAGS) -shared $(CFLAGS) $? -o $@ $(PIDGIN_LIBS) $(GTK_LIBS)
 
-arrange_tabs.o: arrange_tabs.c
+order-tabs.o: order-tabs.c
 	$(CC) $(CFLAGS) -fPIC -c $< -o $@ $(PIDGIN_CFLAGS) $(GTK_CFLAGS)
 
 clean:
-	rm -f arrange_tabs.so
+	rm -f order-tabs.so
 	rm -f *.o
 
-install: arrange_tabs.so
-	@echo "Installing arrange_tabs.so"
+install: order-tabs.so
+	@echo "Installing order-tabs.so"
 	mkdir -p $(PLUGIN_DIR)
-	cp arrange_tabs.so $(PLUGIN_DIR)
+	cp order-tabs.so $(PLUGIN_DIR)
 	@echo "Plugin installed to ~/.purple/plugins/"

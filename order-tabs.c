@@ -11,9 +11,9 @@
 #include "string.h"
 
 #define PLUGIN_VERSION "1.1"
-#define PLUGIN_ID "arrange_tabs"
+#define PLUGIN_ID "order-tabs"
 
-int cmd_rearrange_id;
+int cmd_order_id;
 
 static int compare(const void * a, const void * b) {
 	const char *pa = *(const char**)a;
@@ -47,7 +47,7 @@ static GtkWidget* get_tab_by_title(const char* title, PidginWindow* win) {
 	return NULL;
 }
 
-static void rearrange_tabs(PurpleConversation *purpleConv) {
+static void reorder_tabs(PurpleConversation *purpleConv) {
 	PidginConversation *pidginConv;
 	PidginWindow *win;
 
@@ -84,11 +84,11 @@ static void rearrange_tabs(PurpleConversation *purpleConv) {
 }
 
 static void conversation_created_cb(PurpleConversation *conv) {
-	rearrange_tabs(conv);
+	reorder_tabs(conv);
 }
 
-static PurpleCmdRet cmd_rearrange_cb(PurpleConversation *conv, const gchar *cmd, gchar **args, gchar **error, void *data) {
-	rearrange_tabs(conv);
+static PurpleCmdRet cmd_reorder_cb(PurpleConversation *conv, const gchar *cmd, gchar **args, gchar **error, void *data) {
+	reorder_tabs(conv);
 
 	return PURPLE_CMD_RET_OK;
 }
@@ -99,13 +99,13 @@ static gboolean plugin_load(PurplePlugin *plugin) {
 
 	purple_signal_connect(convs_handle, "conversation-created", plugin, PURPLE_CALLBACK(conversation_created_cb), NULL);
 
-	cmd_rearrange_id = purple_cmd_register("arrangetabs", "", PURPLE_CMD_P_DEFAULT, PURPLE_CMD_FLAG_CHAT | PURPLE_CMD_FLAG_IM, PLUGIN_ID, cmd_rearrange_cb, "Rearranges the tabs alphabetically", NULL);
+	cmd_order_id = purple_cmd_register("ordertabs", "", PURPLE_CMD_P_DEFAULT, PURPLE_CMD_FLAG_CHAT | PURPLE_CMD_FLAG_IM, PLUGIN_ID, cmd_reorder_cb, "Order conversation tabs alphabetically", NULL);
 
 	return TRUE;
 }
 
 static gboolean plugin_unload(PurplePlugin *plugin) {
-	purple_cmd_unregister(cmd_rearrange_id);
+	purple_cmd_unregister(cmd_order_id);
 
 	return TRUE;
 }
@@ -121,11 +121,11 @@ static PurplePluginInfo info = {
 	PURPLE_PRIORITY_DEFAULT,
 
 	PLUGIN_ID,
-	"Arrange Tabs",
+	"Order Tabs",
 	PLUGIN_VERSION,
 
-	"Arranges tabs alphabetically.",
-	"Arranges tabs alphabetically. Ripoff of pidgin-leftify_tabs plugin.",
+	"Order tabs alphabetically.",
+	"Order conversation tabs alphabetically. Tabs are ordered on startup, use the '/ordertabs' in any chat to order your tabs anytime. Ripoff of pidgin-leftify_tabs plugin.",
 	"James Read <contact@jwread.com>",
 	"http://example.com",
 
@@ -145,4 +145,4 @@ static PurplePluginInfo info = {
 
 static void init_plugin(PurplePlugin *plugin) {}
 
-PURPLE_INIT_PLUGIN(arrange_tabs, init_plugin, info)
+PURPLE_INIT_PLUGIN(order_tabs, init_plugin, info)
