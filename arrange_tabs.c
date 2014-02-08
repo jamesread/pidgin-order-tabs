@@ -7,9 +7,13 @@
 #include "version.h"
 #include "gtkplugin.h"
 #include "gtkconv.h"
+#include "cmds.h"
 #include "string.h"
 
-#define PLUGIN_VERSION "1.0"
+#define PLUGIN_VERSION "1.1"
+#define PLUGIN_ID "arrange_tabs"
+
+int cmd_rearrange_id;
 
 static int compare(const void * a, const void * b) {
 	const char *pa = *(const char**)a;
@@ -83,11 +87,25 @@ static void conversation_created_cb(PurpleConversation *conv) {
 	rearrange_tabs(conv);
 }
 
+static PurpleCmdRet cmd_rearrange_cb(PurpleConversation *conv, const gchar *cmd, gchar **args, gchar **error, void *data) {
+	rearrange_tabs(conv);
+
+	return PURPLE_CMD_RET_OK;
+}
+
 static gboolean plugin_load(PurplePlugin *plugin) {
 	void *convs_handle;
 	convs_handle = purple_conversations_get_handle();
 
 	purple_signal_connect(convs_handle, "conversation-created", plugin, PURPLE_CALLBACK(conversation_created_cb), NULL);
+
+	cmd_rearrange_id = purple_cmd_register("arrangetabs", "", PURPLE_CMD_P_DEFAULT, PURPLE_CMD_FLAG_CHAT | PURPLE_CMD_FLAG_IM, PLUGIN_ID, cmd_rearrange_cb, "Rearranges the tabs alphabetically", NULL);
+
+	return TRUE;
+}
+
+static gboolean plugin_unload(PurplePlugin *plugin) {
+	purple_cmd_unregister(cmd_rearrange_id);
 
 	return TRUE;
 }
@@ -102,7 +120,7 @@ static PurplePluginInfo info = {
 	NULL,
 	PURPLE_PRIORITY_DEFAULT,
 
-	"arrange_tabs",
+	PLUGIN_ID,
 	"Arrange Tabs",
 	PLUGIN_VERSION,
 
@@ -112,7 +130,7 @@ static PurplePluginInfo info = {
 	"http://example.com",
 
 	plugin_load,
-	NULL,
+	plugin_unload,
 	NULL,
 
 	NULL,
