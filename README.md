@@ -28,4 +28,4 @@ Installing the plugin to `~/.purple/plugins/`
 
 	make install
 
-Enable plugin *Arrange Tabs* from Pidgin plugins list.
+Enable plugin *Order Tabs* from Pidgin plugins list.
